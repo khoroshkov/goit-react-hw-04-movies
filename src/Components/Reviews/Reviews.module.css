@@ -1,0 +1,28 @@
+.reviewsWrapper {
+  padding-top: 40px;
+  color: #ffffff;
+}
+
+.reviewsList {
+  list-style: none;
+}
+
+.reviewsAuthor {
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgb(27, 27, 233)
+}
+
+.reviewsText {
+  font-style: italic;
+}
+
+.reviewsList > li:not(:last-child){
+  margin-bottom: 20px;
+}
+
+.noReviews {
+  text-align: center;
+  font-size: 18px;
+}

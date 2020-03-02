@@ -1,0 +1,36 @@
+.navigationWrapper {
+  display: flex;
+  justify-content: flex-end;
+  
+  
+  align-items: center;
+}
+
+.navContainer {
+  display: flex;
+  flex-flow: row wrap;
+  width: 320px;
+  justify-content: space-between;
+  padding: 40px 70px 40px 0px;
+}
+
+.menuList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.menuList a {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: rgb(244, 248, 247);
+  text-decoration: none;
+  transition: color 0.3s linear;
+}
+
+.menuList a:hover,
+.menuList a:hover {
+  color: rgb(16, 16, 252);
+  transform: scale(1.2)
+}

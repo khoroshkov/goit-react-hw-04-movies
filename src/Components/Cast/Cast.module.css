@@ -1,0 +1,47 @@
+.castContainer {
+  display: flex;
+  padding: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.castList {
+  display: flex;
+  flex-direction: row wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* max-width: 1200px; */
+  list-style: none;
+  padding-top: 35px;
+}
+
+.castItems {
+  width: 140px;
+  padding: 2px;
+  border: 1px solid #000000;
+  margin-bottom: 20px;
+}
+
+.castImg {
+  width: 120px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.castActorName,
+.castCharacterTitle {
+  text-align: center;
+  color: #ffffff;
+}
+
+.castActorName {
+  text-transform: uppercase;
+}
+
+.castCharacterTitle {
+  color: rgb(253, 149, 80);
+}
+
+.castCharacterName {
+  color: #ff3705;
+}

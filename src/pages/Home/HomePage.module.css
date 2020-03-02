@@ -1,0 +1,36 @@
+.homePageWrapper {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  object-fit: cover;
+  box-shadow: 0 0 0 700px rgba(0, 0, 0, 0.15) inset;
+}
+
+.mainTitle,
+.slogan {
+  font-family: "Montserrat", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.mainTitle {
+  color: rgb(255, 142, 66);
+}
+
+.slogan {
+  font-size: 28px;
+  color: rgb(224, 158, 71);
+  box-shadow: -1px 18px 28px -19px rgb(252, 135, 2);
+}
+
+.slogan::after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: rgb(224, 158, 71);
+  content: "";
+  margin: 16px auto 20px auto;
+}
+
