@@ -1,25 +1,37 @@
-import React, {lazy, Suspense} from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import routes from "../routes";
-import Loader from "../Loader/Loader";
+import Loader from "react-loader-spinner";
 import styles from "./App.module.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-const AsyncHomePage = lazy(() => import("../../pages/Home/HomePage" /* webpackChunkName: "home-page" */))
+const AsyncHomePage = lazy(() =>
+  import("../../pages/Home/HomePage" /* webpackChunkName: "home-page" */)
+);
 
-const AsyncMovieDetailsPage = lazy(() => import("../../pages/SingleMovie/MovieDetailsPage" /* webpackChunkName: "movie-details-page" */))
+const AsyncMovieDetailsPage = lazy(() =>
+  import(
+    "../../pages/SingleMovie/MovieDetailsPage" /* webpackChunkName: "movie-details-page" */
+  )
+);
 
-const AsyncMoviesPage = lazy(() => import("../../pages/Movies/MoviesPage" /* webpackChunkName: "movies-page" */))
+const AsyncMoviesPage = lazy(() =>
+  import("../../pages/Movies/MoviesPage" /* webpackChunkName: "movies-page" */)
+);
 
 const App = () => (
   <BrowserRouter>
     <div className={styles.mainWraper}>
       <Suspense fallback={Loader}>
-      <Switch>
-        <Route path={routes.HOME} exact component={AsyncHomePage} />
-        <Route path={routes.MOVIE_DETAILS} component={AsyncMovieDetailsPage} />
-        <Route path={routes.MOVIES} exact component={AsyncMoviesPage} />
-        <Redirect to={routes.HOME} />
-      </Switch>
+        <Switch>
+          <Route path={routes.HOME} exact component={AsyncHomePage} />
+          <Route
+            path={routes.MOVIE_DETAILS}
+            component={AsyncMovieDetailsPage}
+          />
+          <Route path={routes.MOVIES} exact component={AsyncMoviesPage} />
+          <Redirect to={routes.HOME} />
+        </Switch>
       </Suspense>
     </div>
   </BrowserRouter>

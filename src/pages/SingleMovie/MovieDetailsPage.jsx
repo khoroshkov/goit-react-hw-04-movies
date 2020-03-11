@@ -4,8 +4,11 @@ import * as movieAPI from "../../services/movie-API";
 import Cast from "..//../Components/Cast/Cast";
 import Reviews from "..//../Components/Reviews/Reviews";
 import Navigation from "../../Components/Navigation/Navigation";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import PropTypes from "prop-types";
 import styles from "./MovieDetailsPage.module.css";
+import posterUnavailibleLarge from "..//../img/poster-unavailible-large.jpg";
 
 export default class MovieDetailsPage extends Component {
   static propTypes = {
@@ -18,22 +21,46 @@ export default class MovieDetailsPage extends Component {
 
   state = {
     data: {},
-    error: null
+    error: null,
+    isLoading: false
   };
 
   componentDidMount() {
     const { match } = this.props;
     const { movieId } = match.params;
 
+    this.setState({ isLoading: true });
+
     movieAPI
       .getMovieById(movieId)
       .then(({ data }) => this.setState({ data }))
-      .catch(error => this.setState({ error }));
+      .catch(error => this.setState({ error }))
+      .finally(this.setState({ isLoading: false }));
   }
 
   handleGoBack = () => {
-    const { history } = this.props;
-    history.push("/");
+    const { history, location } = this.props;
+
+    if (location.state) {
+      return history.push(location.state.from);
+    } else if (location.state === undefined) {
+      return history.push("/");
+    } else history.goBack();
+  };
+
+  // не работает
+  handleCloseOnClick = () => {
+    const { history, location, match } = this.props;
+    const { movieId } = match.params;
+
+    if (location.pathname === `/movies/${movieId}/cast`) {
+      console.log(location.pathname, movieId);
+      console.log(`/movies/${movieId}`);
+     
+
+      return history.push(`/movies/${movieId}`);
+      // return history.goBack(); // работает - на главную.
+    }
   };
 
   render() {
@@ -51,11 +78,19 @@ export default class MovieDetailsPage extends Component {
         <Navigation />
         <div className={styles.singleMoviepageWrapper}>
           <article className={styles.movieInfo}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-              alt={title}
-              className={styles.moviePoster}
-            />
+            {poster_path !== null ? (
+              <img
+                src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+                alt={title}
+                className={styles.moviePoster}
+              />
+            ) : (
+              <img
+                src={posterUnavailibleLarge}
+                alt={title}
+                className={styles.moviePoster}
+              />
+            )}
             <div className={styles.textContainer}>
               <h2 className={styles.movieTitle}>{title}</h2>
               <p className={styles.addInfoTitles}>
@@ -69,7 +104,7 @@ export default class MovieDetailsPage extends Component {
               <div className={styles.genresContainer}>
                 <p className={styles.genresTitle}>Genres:</p>
                 <span>
-                  {genres && genres.length > 0 && (
+                  {genres && (
                     <ul className={styles.genresList}>
                       {genres.map(genre => (
                         <li key={genre.id}>
@@ -88,6 +123,7 @@ export default class MovieDetailsPage extends Component {
                         replace
                         className={styles.addInfoLink}
                         activeClassName={styles.active}
+                        onClick={this.handleCloseOnClick}
                       >
                         Cast
                       </NavLink>
@@ -114,6 +150,16 @@ export default class MovieDetailsPage extends Component {
               </div>
             </div>
           </article>
+
+          {this.state.isLoading && (
+            <Loader
+              type="Triangle"
+              color="#00BFFF"
+              height={150}
+              width={150}
+              timeout={3000}
+            />
+          )}
 
           <Switch>
             <Route

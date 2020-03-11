@@ -3,8 +3,9 @@ import * as movieAPI from "..//../services/movie-API";
 import MoviesList from "../../Components/MoviesList/MoviesList";
 import Navigation from "../../Components/Navigation/Navigation";
 import SearchBar from "../../Components/SearchBar/SearchBar";
-import Loader from "../../Components/Loader/Loader";
 import NotFoundPage from "../../Components/NotFoudPage/NotFoundPage";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import styles from "./MoviesPage.module.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import PropTypes from "prop-types";
@@ -32,11 +33,7 @@ export default class MoviesPages extends Component {
 
     if (query) {
       this.setState({ isLoading: true });
-      movieAPI
-        .searchMovies(query)
-        .then(res => this.setState({ movies: [...res.data.results] }))
-        .catch(error => this.setState({ error }))
-        .finally(this.setState(() => this.setState({ isLoading: false })));
+      this.getMoviesFromServer(query);
     }
   }
 
@@ -46,16 +43,21 @@ export default class MoviesPages extends Component {
 
     if (prevProps.location.search !== location.search) {
       this.setState({ isLoading: true });
-
-      movieAPI
-        .searchMovies(query)
-        .then(res => this.setState({ movies: [...res.data.results] }))
-        .catch(error => this.setState({ error }))
-        .finally(() => {
-          this.setState(() => this.setState({ isLoading: false }));
-        });
+      this.getMoviesFromServer(query);
     }
   }
+
+  getMoviesFromServer = query => {
+    movieAPI
+      .searchMovies(query)
+      .then(res => {
+        res.data.results.length === 0
+          ? this.setState({ isNotFound: true })
+          : this.setState({ movies: [...res.data.results] });
+      })
+      .catch(error => this.setState({ error }))
+      .finally(this.setState({ isLoading: false }));
+  };
 
   handleInputChange = e => {
     const { name, value } = e.target;
@@ -84,7 +86,6 @@ export default class MoviesPages extends Component {
       handleInputChange
     } = this.state;
 
-    
     return (
       <div className={styles.searchMoviesWrapper}>
         <Navigation />

@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import * as movieAPI from "../../services/movie-API";
 import styles from "./Cast.module.css";
+import popTransition from "../../transitions/pop.module.css"
 import PropTypes from "prop-types";
+import defaultAvatar from "..//../img/default-avatar.png";
 
 export default class Cast extends Component {
   static propTypes = {
@@ -26,22 +29,29 @@ export default class Cast extends Component {
 
   render() {
     const { data } = this.state;
+
     return (
       <div className={styles.castContainer}>
-        <ul className={styles.castList}>
+        <TransitionGroup component="ul" className={styles.castList}>
           {data.cast &&
-            data.cast.length > 0 &&
             data.cast.map(actor => (
+              <CSSTransition key={actor.cast_id} timeout={200} unmountOnExit classNames={popTransition}>
               <li key={actor.cast_id} className={styles.castItems}>
-                {actor.profile_path && (
+                {actor.profile_path !== null ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
                     alt={actor.name}
                     className={styles.castImg}
                   />
+                ) : (
+                  <img
+                    src={defaultAvatar}
+                    alt={actor.name}
+                    className={styles.castImg}
+                  />
                 )}
                 <h5 className={styles.castActorName}>{actor.name}</h5>
-                {actor.character.length > 0 && (
+                {actor.character && (
                   <p className={styles.castCharacterTitle}>
                     Character:{" "}
                     <span className={styles.castCharacterName}>
@@ -50,8 +60,9 @@ export default class Cast extends Component {
                   </p>
                 )}
               </li>
+              </CSSTransition>
             ))}
-        </ul>
+        </TransitionGroup>
       </div>
     );
   }
